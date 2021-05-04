@@ -5,7 +5,7 @@
 ```
 aws iot create-thing --thing-name NCHackDevice
 ```
-Save the return value that looks like this
+Take not of the thingName 
 ```
 {
     "thingName": "NCHackDevice",
@@ -14,7 +14,7 @@ Save the return value that looks like this
 }
 ```
 
-2. Create certificate, take note of CertificateId (use GUI or CLI command).
+2. Create certificate in your /data -folder, take note of CertificateId
 ```
 aws iot create-keys-and-certificate \
     --set-as-active \
@@ -22,8 +22,6 @@ aws iot create-keys-and-certificate \
     --public-key-outfile "mything.public.key" \
     --private-key-outfile "mything.private.key"
 ```
-1. Activate certificate (Included in CLI command above)
-1. Download certificates (Included in CLI command above)
 1. Modify policy.json to match your requirements
 1. Create your policy
 ```
