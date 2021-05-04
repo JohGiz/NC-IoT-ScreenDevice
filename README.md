@@ -1,4 +1,4 @@
-# Nordcloud AWS IoT example
+# AWS IoT example from Nordcloud Hackathon 2021
 
 ## Step by step
 1. Create AWS IoT Thing
