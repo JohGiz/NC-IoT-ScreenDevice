@@ -37,6 +37,12 @@ aws iot attach-policy \
     --policy-name NCHackPolicy \
     --target "arn:aws:iot:<region>:<account-id>:cert/<certificate-id-noted-above>"
 ```
+1. Connect certificate to your AWS IoT Thing
+```
+aws iot attach-thing-principal \
+    --thing-name NCHackDevice \
+    --principal arn:aws:iot:<region>:<account-id>:cert/<certificate-id-noted-above>
+```
 1. Copy config.h_EXAMPLE to config.h
 1. Edit and add correct values to config.h
 1. Install [ESP8266 filesystem uploader](https://github.com/esp8266/arduino-esp8266fs-plugin)
