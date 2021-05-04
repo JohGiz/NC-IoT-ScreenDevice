@@ -14,42 +14,64 @@ Save the return value that looks like this
 }
 ```
 
-2. Create certificate (use gui or cli)
-1. Activate certificate
-1. Download certificates
-1. Create certificate
+2. Create certificate, take note of CertificateId (use GUI or CLI command).
 ```
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": "iot:Connect",
-      "Resource": "arn:aws:iot:<region>:<accountid>:client/${iot:Connection.Thing.ThingName}"
-    },
-    {
-      "Effect": "Allow",
-      "Action": "iot:Subscribe",
-      "Resource": "arn:aws:iot:<region>:<accountid>:topicfilter/${iot:Connection.Thing.ThingName}/oled-*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": "iot:Receive",
-      "Resource": "arn:aws:iot:<region>:<accountid>:topic/${iot:Connection.Thing.ThingName}/oled-*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": "iot:Publish",
-      "Resource": "arn:aws:iot:<region>:<accountid>:topic/oled/alive"
-    }
-  ]
-}
+aws iot create-keys-and-certificate \
+    --set-as-active \
+    --certificate-pem-outfile "mything.cert.pem" \
+    --public-key-outfile "mything.public.key" \
+    --private-key-outfile "mything.private.key"
+```
+1. Activate certificate (Included in CLI command above)
+1. Download certificates (Included in CLI command above)
+1. Modify policy.json to match your requirements
+1. Create your policy
+```
+aws iot create-policy \
+    --policy-name NCHackPolicy \
+    --policy-document file://policy.json
 ```
 1. Connect policy to certificate
-1. Convert certificates [How to convert](https://github.com/copercini/esp8266-aws_iot)
-1. Save to /data/-folder of the sketch
+```
+aws iot attach-policy \
+    --policy-name NCHackPolicy \
+    --target "arn:aws:iot:<region>:<account-id>:cert/<certificate-id-noted-above>"
+```
 1. Copy config.h_EXAMPLE to config.h
-1. Edit and add correct values to config.
+1. Edit and add correct values to config.h
 1. Install [ESP8266 filesystem uploader](https://github.com/esp8266/arduino-esp8266fs-plugin)
-1. Upload file
-1. Upload sketch
+1. Upload files from Aurdino IDE: Tools > ESP8266 Sketch Data Upload
+
+# Setup done
+
+## Monitor ESP device conection
+
+1. Open AWS GUI
+1. Under AWS Core > Test subscribe to topic "esp/alive"
+1. Boot your ESP with the code uploaded
+
+## Publish message to Thing
+1. Open AWS GUI
+1. Under AWS Core > Test publish to topic "NCOledESP/oled-display"
+1. Watch Serial monitor after message arrived. 
+1. Publish the following message to make it show on display
+```
+[
+    { 
+        "type": "article", 
+        "preheadline": "Breaking news",
+        "headline": "Nordcloud",
+        "body": "AWS IoT Hackathon",
+        "delay": 2000
+    },
+    { 
+        "type": "article", 
+        "preheadline": "2021-05-03 14:02",
+        "headline": "Slack message",
+        "body": "xxxxxx",
+        "delay": 5000
+    }
+
+]
+```
+1. Do your magic and build something to publish some cool information to your ESP
