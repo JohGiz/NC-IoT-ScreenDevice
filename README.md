@@ -5,14 +5,6 @@
 ```
 aws iot create-thing --thing-name NCHackDevice
 ```
-Take not of the thingName 
-```
-{
-    "thingName": "NCHackDevice",
-    "thingArn": "arn:aws:iot:<region>:<acountid>:thing/NCHackDevice",
-    "thingId": "xxxxxx-xxxx-xxxx-xxx-xxxxxxxxxxxx"
-}
-```
 
 2. Create certificate in your /data -folder, take note of returned CertificateId
 ```
@@ -21,6 +13,16 @@ aws iot create-keys-and-certificate \
     --certificate-pem-outfile "mything.cert.pem" \
     --public-key-outfile "mything.public.key" \
     --private-key-outfile "mything.private.key"
+```
+1. Convert pem and key files to DER
+```
+$ openssl x509 -in mything-certificate.pem.crt -out cert.der -outform DER
+$ openssl rsa -in mything-private.pem.key -out private.der -outform DER
+```
+1. Download AmazonCA1 from https://www.amazontrust.com/repository/AmazonRootCA1.pem
+1. Convert to DER
+```
+$ openssl x509 -in AmazonRootCA1.pem -out ca.der -outform DER
 ```
 1. Modify policy.json to match your requirements
 1. Execute the creation of the policy

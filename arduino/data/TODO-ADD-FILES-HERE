@@ -2,15 +2,3 @@ This folder should contain the following 3 files:
 ca.der
 cert.der
 private.der
-
-Download AmazonRootCA1.pem from 
-https://www.amazontrust.com/repository/AmazonRootCA1.pem
-
-The files are downloaded from AWS IoT
-<id>-certificate.pem.crt
-<id>-private.pem.key
-
-Commands to convert cert to DER-format:
-$ openssl x509 -in mything-certificate.pem.crt -out cert.der -outform DER
-$ openssl rsa -in mything-private.pem.key -out private.der -outform DER
-$ openssl x509 -in AmazonRootCA1.pem -out ca.der -outform DER
