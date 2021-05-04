@@ -14,7 +14,7 @@ Take not of the thingName
 }
 ```
 
-2. Create certificate in your /data -folder, take note of CertificateId
+2. Create certificate in your /data -folder, take note of returned CertificateId
 ```
 aws iot create-keys-and-certificate \
     --set-as-active \
@@ -23,13 +23,13 @@ aws iot create-keys-and-certificate \
     --private-key-outfile "mything.private.key"
 ```
 1. Modify policy.json to match your requirements
-1. Create your policy
+1. Execute the creation of the policy
 ```
 aws iot create-policy \
     --policy-name NCHackPolicy \
     --policy-document file://policy.json
 ```
-1. Connect policy to certificate
+1. Connect policy to your created certificate
 ```
 aws iot attach-policy \
     --policy-name NCHackPolicy \
@@ -41,8 +41,8 @@ aws iot attach-thing-principal \
     --thing-name NCHackDevice \
     --principal arn:aws:iot:<region>:<account-id>:cert/<certificate-id-noted-above>
 ```
-1. Copy config.h_EXAMPLE to config.h
-1. Edit and add correct values to config.h
+1. Rename config.h_EXAMPLE to config.h
+1. Edit and add/modify values in config.h
 1. Install [ESP8266 filesystem uploader](https://github.com/esp8266/arduino-esp8266fs-plugin)
 1. Upload files from Aurdino IDE: Tools > ESP8266 Sketch Data Upload
 
@@ -53,12 +53,13 @@ aws iot attach-thing-principal \
 1. Open AWS GUI
 1. Under AWS Core > Test subscribe to topic "esp/alive"
 1. Boot your ESP with the code uploaded
+1. See that you get a message that device connected
 
 ## Publish message to Thing
 1. Open AWS GUI
-1. Under AWS Core > Test publish to topic "NCOledESP/oled-display"
-1. Watch Serial monitor after message arrived. 
-1. Publish the following message to make it show on display
+1. Under "AWS Core > Test" publish to topic "NCOledESP/oled-display"
+1. In Aurdino IDE open Serial monitor to monitor activity and errors
+1. Publish the following message to make it show text on display
 ```
 [
     { 
